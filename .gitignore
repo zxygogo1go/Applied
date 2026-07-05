@@ -1,0 +1,32 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.idea/
+
+# Local Python environments
+.venv/
+venv/
+env/
+
+# Runtime outputs and heavyweight model files
+results/
+experiments/
+model_zoo/swinir/
+*.pth
+*.pt
+
+# KAIR runtime outputs and heavyweight training data
+KAIR-master/superresolution/
+KAIR-master/denoising/
+KAIR-master/dejpeg/
+KAIR-master/results/
+KAIR-master/experiments/
+KAIR-master/trainsets/*
+!KAIR-master/trainsets/README.md
+!KAIR-master/trainsets/trainH/
+KAIR-master/trainsets/trainH/*
+!KAIR-master/trainsets/trainH/README.md
+
+# Temporary files
+input_cog_temp/
+*.log

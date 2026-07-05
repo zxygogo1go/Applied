@@ -1,0 +1,6 @@
+# Install PyTorch separately or use an AutoDL image with PyTorch preinstalled.
+# This file contains the extra packages needed by main_test_swinir.py.
+numpy
+opencv-python-headless
+requests
+timm==0.4.12
