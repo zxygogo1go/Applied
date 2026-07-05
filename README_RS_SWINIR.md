@@ -25,6 +25,30 @@ SwinIR-main/testsets/remote/LR_bicubic/X4
 
 For training, `dataroot_L` is `null`, so KAIR generates bicubic LR patches online from HR images. If you have paired LR/HR remote-sensing data, set `dataroot_L` in `configs/swinir_autodl/train_rs_swinir_lightweight_x4_single_gpu.json`.
 
+## No Data Starter
+
+Use EuroSAT RGB to run the full pipeline first:
+
+```bash
+cd SwinIR-main
+pip install -r requirements.txt
+bash scripts/data/prepare_eurosat_x4.sh
+bash scripts/swinir/train_rs_eurosat_x4_single_gpu.sh
+```
+
+EuroSAT RGB images are only 64x64, so this is a smoke-test and preliminary experiment dataset, not the final dataset for a strong remote-sensing SR paper. For the final paper, replace it with larger HR remote-sensing images such as AID, NWPU-RESISC45, UC Merced, PatternNet, or your own satellite/aerial imagery, then run:
+
+```bash
+python scripts/data/prepare_sr_from_image_folder.py \
+  --source /path/to/your/hr_images \
+  --train-hr KAIR-master/trainsets/remote/trainH \
+  --test-hr testsets/remote/HR \
+  --test-lr testsets/remote/LR_bicubic/X4 \
+  --scale 4 \
+  --test-ratio 0.1 \
+  --clear-output
+```
+
 ## Train
 
 ```bash
