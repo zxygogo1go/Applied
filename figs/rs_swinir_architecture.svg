@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#263241"/>
+    </marker>
+    <style>
+      .title{font:700 34px Arial,Helvetica,sans-serif;fill:#111827}
+      .subtitle{font:400 18px Arial,Helvetica,sans-serif;fill:#4b5563}
+      .section{font:700 21px Arial,Helvetica,sans-serif;fill:#111827}
+      .label{font:700 17px Arial,Helvetica,sans-serif;fill:#111827}
+      .small{font:400 14px Arial,Helvetica,sans-serif;fill:#374151}
+      .tiny{font:400 12px Arial,Helvetica,sans-serif;fill:#4b5563}
+      .box{fill:#ffffff;stroke:#263241;stroke-width:2;rx:12}
+      .input{fill:#eef7ff;stroke:#2563a8;stroke-width:2;rx:12}
+      .backbone{fill:#f5f7fb;stroke:#40516b;stroke-width:2;rx:14}
+      .rstb{fill:#fff7e8;stroke:#b7791f;stroke-width:2;rx:12}
+      .refine{fill:#effaf4;stroke:#2f855a;stroke-width:2;rx:12}
+      .loss{fill:#fff1f2;stroke:#b91c1c;stroke-width:2;rx:12}
+      .note{fill:#f9fafb;stroke:#9ca3af;stroke-width:1.5;rx:10}
+      .arrow{stroke:#263241;stroke-width:2.4;fill:none;marker-end:url(#arrow)}
+      .dash{stroke:#6b7280;stroke-width:2;fill:none;stroke-dasharray:6 6;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="#ffffff"/>
+  <text x="60" y="54" class="title">RS-SwinIR-S Architecture for Remote-Sensing Image Super-Resolution</text>
+  <text x="60" y="84" class="subtitle">Lightweight SwinIR-S backbone with spectral-spatial frequency refinement and remote-sensing losses</text>
+
+  <!-- A. Overall flow -->
+  <text x="60" y="130" class="section">A. Overall inference pipeline</text>
+  <rect x="60" y="154" width="130" height="72" class="input"/>
+  <text x="125" y="184" text-anchor="middle" class="label">LR image</text>
+  <text x="125" y="207" text-anchor="middle" class="small">I_LR</text>
+
+  <rect x="230" y="154" width="130" height="72" class="box"/>
+  <text x="295" y="184" text-anchor="middle" class="label">Preprocess</text>
+  <text x="295" y="207" text-anchor="middle" class="small">pad, normalize</text>
+
+  <rect x="400" y="142" width="420" height="96" class="backbone"/>
+  <text x="610" y="173" text-anchor="middle" class="label">SwinIR-S Backbone</text>
+  <text x="610" y="198" text-anchor="middle" class="small">Conv 3x3 -> RSTB x4 -> Conv 3x3 -> residual add</text>
+  <text x="610" y="220" text-anchor="middle" class="small">embed=60, depths=[6,6,6,6], heads=[6,6,6,6]</text>
+
+  <rect x="860" y="154" width="150" height="72" class="box"/>
+  <text x="935" y="184" text-anchor="middle" class="label">Upsample</text>
+  <text x="935" y="207" text-anchor="middle" class="small">PixelShuffle x4</text>
+
+  <rect x="1050" y="154" width="210" height="72" class="refine"/>
+  <text x="1155" y="184" text-anchor="middle" class="label">RS Refinement</text>
+  <text x="1155" y="207" text-anchor="middle" class="small">frequency residual</text>
+
+  <rect x="1300" y="154" width="130" height="72" class="input"/>
+  <text x="1365" y="184" text-anchor="middle" class="label">Final SR</text>
+  <text x="1365" y="207" text-anchor="middle" class="small">I_SR</text>
+
+  <path d="M190 190 L230 190" class="arrow"/>
+  <path d="M360 190 L400 190" class="arrow"/>
+  <path d="M820 190 L860 190" class="arrow"/>
+  <path d="M1010 190 L1050 190" class="arrow"/>
+  <path d="M1260 190 L1300 190" class="arrow"/>
+
+  <!-- B. Backbone -->
+  <text x="60" y="290" class="section">B. SwinIR-S backbone</text>
+  <rect x="60" y="318" width="140" height="70" class="box"/>
+  <text x="130" y="347" text-anchor="middle" class="label">Conv 3x3</text>
+  <text x="130" y="370" text-anchor="middle" class="small">F0</text>
+
+  <rect x="240" y="318" width="140" height="70" class="box"/>
+  <text x="310" y="347" text-anchor="middle" class="label">Patch Embed</text>
+  <text x="310" y="370" text-anchor="middle" class="small">tokens</text>
+
+  <rect x="420" y="294" width="460" height="118" class="rstb"/>
+  <text x="650" y="326" text-anchor="middle" class="label">RSTB Stack</text>
+  <text x="650" y="349" text-anchor="middle" class="small">4 residual Swin Transformer blocks</text>
+  <rect x="455" y="366" width="80" height="30" class="box"/>
+  <text x="495" y="386" text-anchor="middle" class="tiny">RSTB 1</text>
+  <rect x="565" y="366" width="80" height="30" class="box"/>
+  <text x="605" y="386" text-anchor="middle" class="tiny">RSTB 2</text>
+  <rect x="675" y="366" width="80" height="30" class="box"/>
+  <text x="715" y="386" text-anchor="middle" class="tiny">RSTB 3</text>
+  <rect x="785" y="366" width="60" height="30" class="box"/>
+  <text x="815" y="386" text-anchor="middle" class="tiny">RSTB 4</text>
+
+  <rect x="920" y="318" width="150" height="70" class="box"/>
+  <text x="995" y="347" text-anchor="middle" class="label">Patch Unembed</text>
+  <text x="995" y="370" text-anchor="middle" class="small">feature map</text>
+
+  <rect x="1110" y="318" width="140" height="70" class="box"/>
+  <text x="1180" y="347" text-anchor="middle" class="label">Conv 3x3</text>
+  <text x="1180" y="370" text-anchor="middle" class="small">F_body</text>
+
+  <rect x="1290" y="318" width="140" height="70" class="box"/>
+  <text x="1360" y="347" text-anchor="middle" class="label">Add</text>
+  <text x="1360" y="370" text-anchor="middle" class="small">F0 + F_body</text>
+
+  <path d="M200 353 L240 353" class="arrow"/>
+  <path d="M380 353 L420 353" class="arrow"/>
+  <path d="M880 353 L920 353" class="arrow"/>
+  <path d="M1070 353 L1110 353" class="arrow"/>
+  <path d="M1250 353 L1290 353" class="arrow"/>
+  <path d="M130 388 C130 430 1295 430 1360 388" class="dash"/>
+  <text x="560" y="428" class="tiny">long residual connection from shallow feature F0</text>
+
+  <rect x="420" y="458" width="460" height="70" class="note"/>
+  <text x="450" y="486" class="small">Each RSTB contains Swin Transformer Layer x6 with shifted-window self-attention,</text>
+  <text x="450" y="508" class="small">MLP, normalization, and local residual connection.</text>
+
+  <!-- C. Refinement -->
+  <text x="60" y="552" class="section">C. Remote-sensing spectral-spatial frequency refinement</text>
+  <rect x="60" y="588" width="150" height="64" class="input"/>
+  <text x="135" y="615" text-anchor="middle" class="label">Preliminary SR</text>
+  <text x="135" y="636" text-anchor="middle" class="small">I_SR0</text>
+
+  <rect x="60" y="728" width="150" height="64" class="input"/>
+  <text x="135" y="755" text-anchor="middle" class="label">LR reference</text>
+  <text x="135" y="776" text-anchor="middle" class="small">bicubic upsampled</text>
+
+  <rect x="260" y="580" width="150" height="60" class="box"/>
+  <text x="335" y="606" text-anchor="middle" class="label">AvgPool 5x5</text>
+  <text x="335" y="627" text-anchor="middle" class="small">SR_low</text>
+
+  <rect x="260" y="720" width="150" height="60" class="box"/>
+  <text x="335" y="746" text-anchor="middle" class="label">AvgPool 5x5</text>
+  <text x="335" y="767" text-anchor="middle" class="small">LR_low</text>
+
+  <rect x="470" y="560" width="230" height="68" class="refine"/>
+  <text x="585" y="588" text-anchor="middle" class="label">Low-frequency branch</text>
+  <text x="585" y="610" text-anchor="middle" class="small">[SR_low, LR_low] -> Conv-GELU-Conv</text>
+
+  <rect x="470" y="660" width="230" height="68" class="refine"/>
+  <text x="585" y="688" text-anchor="middle" class="label">High-frequency branch</text>
+  <text x="585" y="710" text-anchor="middle" class="small">[SR_high, LR_high, diff] -> Conv</text>
+
+  <rect x="470" y="760" width="230" height="68" class="refine"/>
+  <text x="585" y="788" text-anchor="middle" class="label">Detail gate</text>
+  <text x="585" y="810" text-anchor="middle" class="small">[I_SR0, LR_up] -> 1x1 Conv + Sigmoid</text>
+
+  <rect x="760" y="660" width="190" height="74" class="box"/>
+  <text x="855" y="690" text-anchor="middle" class="label">Residual fusion</text>
+  <text x="855" y="713" text-anchor="middle" class="small">R_low + G * R_high</text>
+
+  <rect x="1010" y="660" width="190" height="74" class="box"/>
+  <text x="1105" y="690" text-anchor="middle" class="label">Scaled add</text>
+  <text x="1105" y="713" text-anchor="middle" class="small">I_SR = I_SR0 + 0.1R</text>
+
+  <rect x="1260" y="665" width="150" height="64" class="input"/>
+  <text x="1335" y="692" text-anchor="middle" class="label">Refined SR</text>
+  <text x="1335" y="713" text-anchor="middle" class="small">I_SR</text>
+
+  <path d="M210 620 L260 610" class="arrow"/>
+  <path d="M210 760 L260 750" class="arrow"/>
+  <path d="M410 610 L470 594" class="arrow"/>
+  <path d="M410 750 L470 594" class="arrow"/>
+  <path d="M700 594 C735 620 748 666 760 690" class="arrow"/>
+  <path d="M700 694 L760 697" class="arrow"/>
+  <path d="M700 794 C735 775 748 728 760 712" class="arrow"/>
+  <path d="M950 697 L1010 697" class="arrow"/>
+  <path d="M1200 697 L1260 697" class="arrow"/>
+  <text x="720" y="642" class="tiny">I_SR0 identity is added in the scaled-add step</text>
+
+  <!-- D. Losses -->
+  <text x="60" y="885" class="section">D. Training objective</text>
+  <rect x="300" y="852" width="130" height="58" class="input"/>
+  <text x="365" y="876" text-anchor="middle" class="label">HR target</text>
+  <text x="365" y="896" text-anchor="middle" class="small">I_HR</text>
+  <rect x="480" y="842" width="150" height="58" class="loss"/>
+  <text x="555" y="866" text-anchor="middle" class="label">Charbonnier</text>
+  <text x="555" y="886" text-anchor="middle" class="tiny">weight 1.0</text>
+  <rect x="660" y="842" width="150" height="58" class="loss"/>
+  <text x="735" y="866" text-anchor="middle" class="label">Edge loss</text>
+  <text x="735" y="886" text-anchor="middle" class="tiny">Sobel, weight 0.05</text>
+  <rect x="840" y="842" width="150" height="58" class="loss"/>
+  <text x="915" y="866" text-anchor="middle" class="label">SAM loss</text>
+  <text x="915" y="886" text-anchor="middle" class="tiny">angle, weight 0.1</text>
+  <rect x="1040" y="842" width="410" height="58" class="note"/>
+  <text x="1245" y="868" text-anchor="middle" class="small">L = L_charbonnier + 0.05 L_edge + 0.1 L_SAM</text>
+  <text x="1245" y="890" text-anchor="middle" class="tiny">HR target and losses are used only during training.</text>
+</svg>
